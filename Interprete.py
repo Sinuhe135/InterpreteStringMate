@@ -1,4 +1,3 @@
-
 def hacerOperacion(operacion):
     corchetesAbiertos = 0
     parentesisAbiertos = 0
@@ -8,18 +7,10 @@ def hacerOperacion(operacion):
     while(indiceCaracter>=0):
 
         if(parentesisAbiertos ==0):
-            if (operacion[indiceCaracter] == "["): 
-                corchetesAbiertos+=1
-
-            elif (operacion[indiceCaracter] == "]"):
-                corchetesAbiertos-=1       
+            corchetesAbiertos+=revisarCorchetes(operacion[indiceCaracter]) 
 
         if(corchetesAbiertos ==0):
-            if (operacion[indiceCaracter] == "("): 
-                parentesisAbiertos+=1
-
-            elif (operacion[indiceCaracter] == ")"):
-                parentesisAbiertos-=1
+            parentesisAbiertos+=revisarParentesis(operacion[indiceCaracter])
 
         if(parentesisAbiertos!=0 or corchetesAbiertos!=0):
             indiceCaracter-=1
@@ -34,7 +25,7 @@ def hacerOperacion(operacion):
             
             return hacerOperacion(operacion[:indiceCaracter]) + hacerOperacion(operacion[(indiceCaracter+1):])
         
-        if (operacion[indiceCaracter] == "-"):
+        elif (operacion[indiceCaracter] == "-"):
 
             if(indiceCaracter==0):
                 return hacerOperacion("0") - hacerOperacion(operacion[(indiceCaracter+1):])
@@ -54,18 +45,10 @@ def hacerOperacion(operacion):
     while(indiceCaracter>=0):
 
         if(parentesisAbiertos ==0):
-            if (operacion[indiceCaracter] == "["): 
-                corchetesAbiertos+=1
-
-            elif (operacion[indiceCaracter] == "]"):
-                corchetesAbiertos-=1       
+            corchetesAbiertos+=revisarCorchetes(operacion[indiceCaracter]) 
 
         if(corchetesAbiertos ==0):
-            if (operacion[indiceCaracter] == "("): 
-                parentesisAbiertos+=1
-
-            elif (operacion[indiceCaracter] == ")"):
-                parentesisAbiertos-=1
+            parentesisAbiertos+=revisarParentesis(operacion[indiceCaracter])
 
         if(parentesisAbiertos!=0 or corchetesAbiertos!=0):
             indiceCaracter-=1
@@ -91,9 +74,28 @@ def hacerOperacion(operacion):
     if(operacion[:1]=="(" and operacion[len(operacion)-1:]==")") or (operacion[:1]=="[" and operacion[len(operacion)-1:]=="]"):
         return hacerOperacion(operacion[1:-1])
     
-    # try:
-    return float(operacion)
-    # except:
-    #     raise ValueError("Error de sintaxis")
+    #Retornar numero
+    if(operacion.isnumeric()):
+        return float(operacion)
+    else:
+        raise ValueError("Error de sintaxis")
+
+def revisarParentesis(caracter):
+    if (caracter == "["): 
+        return 1
+    elif (caracter == "]"):
+        return -1
+    
+    return 0
+
+def revisarCorchetes(caracter):
+    if (caracter == "("): 
+        return 1
+
+    elif (caracter == ")"):
+        return -1
+    
+    return 0
+
             
-print(hacerOperacion("5-2*[2/(3+2)]"))
+print(hacerOperacion("((2-2/4)*8+3)*2"))
